@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row mt-5 justify-content-center">
+      <div class="col-md-4 ">
+        <h4 class="text-center">Sign Up Account</h4>
+        <form id="signUpForm" action="/signUp" method="post" class="shadow rounded p-3">
+
+          <div class="mb-3">
+            <label for="registerFormFirstName" class="form-label">Enter First Name</label>
+            <input type="text" class="form-control" name="registerFormFirstName" id="registerFormFirstName"
+              placeholder="Enter first name" required>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="registerFormLastName" class="form-label">Enter Last Name</label>
+            <input type="text" class="form-control" name="registerFormLastName" id="registerFormLastName"
+              placeholder="Enter last name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerFormEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="registerFormEmail" id="registerFormEmail"
+              placeholder="Enter email id" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerFormEmail" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" name="registerFormPhone" id="registerFormPhone"
+              placeholder="Enter phone number" pattern="[0-9]{10}" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+          <a class="ms-2" href="/login">Go to Login</a>
+          <div class="errorMsg" style="color: red; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#signUpForm').submit(function(e) {
+                e.preventDefault();
+
+                //do your own request an handle the results
+                $.ajax({
+                        url: '/signUp',
+                        type: 'post',
+                        data: $("#signUpForm").serialize()
+                })
+                .done(function(data) {
+                    window.location.href = `/verifyEmailSmsOtp/${data.userId}`;
+                })
+                .fail(function(err) {
+                    const responseObj = JSON.parse(err.responseText);
+
+                    console.log(responseObj);
+
+                    $('.errorMsg').html(responseObj.err);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

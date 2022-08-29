@@ -1,0 +1,32 @@
+{
+  "name": "developers-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "npx knex migrate:latest --knexfile ./db/knexfile.js",
+    "rollback": "npx knex migrate:down --knexfile ./db/knexfile.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devStart": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "knex": "^2.2.0",
+    "messagebird": "^3.8.1",
+    "nodemailer": "^6.7.8",
+    "objection": "^3.0.1",
+    "pg": "^8.8.0",
+    "twilio": "^3.81.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

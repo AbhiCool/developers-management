@@ -1,0 +1,35 @@
+---------------------- Table schema ----------------------------------------
+users(table)
+
+    userId
+    fName
+    lName
+    emailId
+    phone
+    emailOtp
+    phoneOtp
+    emailOtpVerified
+    phoneOtpVerified
+    isAdmin boolean
+
+
+
+
+
+
+userProfile(table)
+
+    userId
+    profilePic
+    address
+    age
+    gender
+    workExp
+    presentCompany
+    currentCTC
+    employmentStatus enum(Employed/Unemployed)
+    availableToHire boolean
+    availableToFreelance boolean
+
+
+
