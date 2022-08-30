@@ -85,12 +85,12 @@ router.delete('/', checkIfAdmin, async  (req, res) => {
                 });
         }
 
-        // const userProfileDeletedData = await UserProfile
-        //                                         .query()
-        //                                         .delete()
-        //                                         .where('user_id', userId);
+        const userProfileDeletedData = await UserProfile
+                                                .query()
+                                                .delete()
+                                                .where('user_id', userId);
         
-        // const userDeletedData = await Users.query().deleteById(userId);
+        const userDeletedData = await Users.query().deleteById(userId);
 
         res.status(200).json({
             err: null,
