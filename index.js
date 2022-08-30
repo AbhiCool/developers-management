@@ -4,6 +4,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 require('dotenv').config();
 
 // Set portNo
@@ -26,12 +27,19 @@ dbSetup();
 // Create express app
 const app = express();
 
+// Get pgPool
+const pgPool = require('./db/pgPool');
+
 // Setup express session middleware
 app.use(session({
+    store: new pgSession({
+        pool: pgPool
+    }),
     secret: process.env.sessionSecret,
-    resave: true,
-    saveUninitialized: true
-}))
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+  }));
 
 // Set default engine
 app.set('view engine', 'ejs');
