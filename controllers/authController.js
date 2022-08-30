@@ -5,7 +5,7 @@ const sendMail = require('../utils/sendMail');
 
 const sendSms = require('../utils/sendSms');
 
-const { randomString } = require('../utils/commonFunctions');
+const { randomStringOfNumbers } = require('../utils/commonFunctions');
 
 const onSlashGet = async (req, res) => {
 
@@ -81,14 +81,42 @@ const onSignUpGet = (req, res) => {
 const onSignUpPost = async (req, res) => {
     console.log('req.body', req.body);
     // Create email otp
-    const emailOtp = randomString(4);
+    const emailOtp = randomStringOfNumbers(4);
 
     // Create phoneOtp
-    const phoneOtp = randomString(4);
+    const phoneOtp = randomStringOfNumbers(4);
 
     const { registerFormFirstName, registerFormLastName, registerFormEmail, registerFormPhone ,registerFormIsAdmin} = req.body;
 
     const isAdmin = (!registerFormIsAdmin) ? false : true;
+
+    // Check if email id provided already present in users table
+    const userEmailArray = await Users.query()
+                            .select('user_id')
+                            .where('email_id', registerFormEmail)
+
+    console.log('userEmailArray', userEmailArray);
+
+    if (userEmailArray.length > 0) {
+        return res.status(403).json({
+            err: "Cannot use provided email id as it is already used"
+        });
+    }
+
+
+    // Check if phone provided already present in users table
+    const userPhoneArray = await Users.query()
+        .select('user_id')
+        .where('phone', registerFormPhone)
+
+    console.log('userPhoneArray', userPhoneArray);
+
+    if (userPhoneArray.length > 0) {
+        return res.status(403).json({
+            err: "Cannot use provided phone as it is already used"
+        });
+    }
+
     try {
         const userInsertData = await Users.query().insert({
             first_name: registerFormFirstName,
@@ -126,7 +154,7 @@ const onSignUpPost = async (req, res) => {
         // Send the sms with phoneOtp as its content
         const smsContent = `Hello ${registerFormFirstName} ${registerFormLastName} - ${phoneOtp} is your OTP to verify your phone number.`;
 
-        // sendSms(registerFormPhone, smsContent);
+        sendSms(registerFormPhone, smsContent);
     }
     catch (err) {
         console.log(err);

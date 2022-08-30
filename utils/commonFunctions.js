@@ -1,8 +1,8 @@
-function randomString (strLength, charSet) {
+function randomStringOfNumbers (strLength, charSet) {
     var result = [];
     
     strLength = strLength || 5;
-    charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    charSet = charSet || '0123456789';
     
     while (strLength--) { // (note, fixed typo)
         result.push(charSet.charAt(Math.floor(Math.random() * charSet.length)));
@@ -12,5 +12,5 @@ function randomString (strLength, charSet) {
 }
 
 module.exports = {
-    randomString
+    randomStringOfNumbers
 }
