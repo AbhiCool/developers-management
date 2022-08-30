@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>List Developers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+    <%- include("partials/header") -%>
+        <div class="container">
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-12">
+                    <h4 class="text-center">List Developers</h4>
+                    <table class="listDevelopers table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">User Id</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Email Id</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Is Admin?</th>
+                                <th scope="col" class="text-center">Update</th>
+                                <th scope="col" class="text-center">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% for (var i=0; i < usersArray.length; i++) {%>
+                                <tr>
+                                    <th scope="row">
+                                        <%= usersArray[i].user_id %>
+                                    </th>
+                                    <td>
+                                        <%= usersArray[i].first_name %>
+                                    </td>
+                                    <td>
+                                        <%= usersArray[i].last_name %>
+                                    </td>
+                                    <td>
+                                        <%= usersArray[i].email_id %>
+                                    </td>
+                                    <td>
+                                        <%= usersArray[i].phone %>
+                                    </td>
+                                    <td>
+                                        <%= usersArray[i].isAdmin %>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="updateDev btn btn-primary"
+                                            data-user-id="<%= usersArray[i].user_id %>">
+                                            Update
+                                        </button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="deleteDev btn btn-primary"
+                                            data-user-id="<%= usersArray[i].user_id %>">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- deletePromptModal -->
+        <div class="modal fade" id="deletePromptModal" tabindex="-1" aria-labelledby="deletePromptModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deletePromptModalLabel">Delete user</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-danger deleteDevYes">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of deletePromptModal -->
+
+        <!-- updateFormPromptModal -->
+        <div class="modal fade" id="updateFormPromptModal" tabindex="-1" aria-labelledby="updateFormPromptModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateFormPromptModalLabel">Update Developer Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateProfileForm" class="shadow rounded p-3">
+                            <input type="hidden" name="userId" value=""/>
+                            <div class="mb-3">
+                                <label for="updateProfilePresentCompany" class="form-label">Present Company</label>
+                                <input type="text" class="form-control" name="updateProfilePresentCompany"
+                                    id="updateProfilePresentCompany" placeholder="--optional-- Enter Present Company"
+                                    value="">
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="updateProfileCurrentCTC" class="form-label">Current CTC in LPA</label>
+                                <input type="number" class="form-control" name="updateProfileCurrentCTC"
+                                    id="updateProfileCurrentCTC" placeholder="--optional-- Enter Current CTC in LPA"
+                                    value="">
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="updateProfileEmail" class="form-label">Employment Status</label>
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                    type="radio" name="updateProfileEmpStatus" id="updateProfileEmployed"
+                                    value="Employed" required>
+                                    <label class="form-check-label" for="updateProfileEmployed">
+                                        Employed
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                    type="radio" name="updateProfileEmpStatus" id="updateProfileUnemployed"
+                                    value="Unemployed">
+                                    <label class="form-check-label" for="updateProfileUnemployed">
+                                        Unemployed
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                value="true" name="updateProfileAvailableToHire" id="updateProfileAvailableToHire">
+                                <label class="form-check-label" for="updateProfileAvailableToHire">
+                                    Available to hire
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                type="checkbox" value="true" name="updateProfileAvailableToFreelance"
+                                id="updateProfileAvailableToFreelance">
+                                <label class="form-check-label" for="updateProfileAvailableToFreelance">
+                                    Available to freelance
+                                </label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="updateProfileCompanyAppliedFor" class="form-label">Company Applied For</label>
+                                <input type="text" class="form-control" name="updateProfileCompanyAppliedFor"
+                                    id="updateProfileCompanyAppliedFor" placeholder="--optional-- Company applied for"
+                                    value="">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-2">Update Profile</button>
+                            <div class="errorMsg"
+                                style="color: red; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;">
+                            </div>
+                            <div class="successMsg"
+                                style="color: green; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Send message</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- End of updateFormPromptModal -->
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#updateProfileForm').submit(function (e) {
+                    e.preventDefault();
+
+                    //do your own request an handle the results
+                    $.ajax({
+                        url: '/admin',
+                        type: 'put',
+                        data: $("#updateProfileForm").serialize(),
+                    })
+                        .done(function (data) {
+                            console.log("in done")
+
+                            $('.errorMsg').html("");
+
+                            $('.successMsg')
+                                .show()
+                                .html("Developer details updated successfully.")
+                                .fadeOut(4000, function() {
+                                    $(this).html("");
+
+                                    updateFormPromptModal.hide();
+                                });
+                        })
+                        .fail(function (err) {
+                            const responseObj = JSON.parse(err.responseText);
+
+                            console.log(responseObj);
+
+                            $('.errorMsg').html(responseObj.err);
+                        });
+                });
+
+
+                var deletePromptModal = new bootstrap.Modal(document.getElementById('deletePromptModal'), {
+                    keyboard: false
+                });
+                var userIdToDelete = 0;
+                $('.listDevelopers').on('click', '.deleteDev', function () {
+                    // Store row's userId in userIdToDelete variable
+                    userIdToDelete = parseInt($(this).attr("data-user-id"));
+
+                    console.log("userIdToDelete", userIdToDelete);
+
+                    // Show the confirm prompt
+                    deletePromptModal.show();
+                });
+
+
+                $('#deletePromptModal').on('click', '.deleteDevYes', function () {
+                    console.log("userIdToDelete", userIdToDelete);
+
+                    deletePromptModal.hide();
+
+                    $.ajax({
+                        url: '/admin',
+                        type: 'delete',
+                        data: {
+                            userId: userIdToDelete
+                        }
+                    })
+                        .done(function (data) {
+                            userIdToDelete = 0;
+
+                            console.log("userIdToDelete", userIdToDelete);
+
+                            window.location.href = "/admin";
+                        })
+                        .fail(function (err) {
+
+                        });
+                });
+
+
+                var updateFormPromptModal = new bootstrap.Modal(document.getElementById('updateFormPromptModal'), {
+                    keyboard: false
+                });
+
+                $('.listDevelopers').on('click', '.updateDev', function () {
+
+                    // Store row's userId in userIdToGet variable
+                    const userIdToGet = parseInt($(this).attr("data-user-id"));
+                    $.ajax({
+                        url: '/admin/' + userIdToGet,
+                        method: 'get'
+                    })
+                    .done(function(data) {
+                        console.log('data', data);
+
+                        $('#updateProfileForm [name="userId"]').val(userIdToGet);
+                        $('#updateProfileForm #updateProfilePresentCompany').val(data.present_company);
+                        $('#updateProfileForm #updateProfileCurrentCTC').val(data.current_ctc);
+
+                        $('#updateProfileForm  [name="updateProfileEmpStatus"][value="' + data.employment_status + '"]').prop("checked", true);
+
+                        $('#updateProfileForm  #updateProfileAvailableToHire').prop('checked', data.available_to_hire);
+                        $('#updateProfileForm  #updateProfileAvailableToFreelance').prop('checked', data.available_to_freelance);
+                        
+                        $('#updateProfileForm  #updateProfileCompanyAppliedFor').val(data.company_applied_for);
+                        // Show the update form modal
+                        updateFormPromptModal.show();
+                    })
+                });
+            });
+        </script>
+</body>
+
+</html>

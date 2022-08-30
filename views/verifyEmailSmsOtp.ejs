@@ -17,13 +17,13 @@
                 <form id="verifyEmailSmsOtpForm" action="/verifyEmailSmsOtp" method="post" class="shadow rounded p-3">
                     <input type="hidden" name="userId" value="<%= userId %>">
                     <div class="mb-3">
-                        <label for="emailOtp" class="form-label">Email OTP</label>
-                        <input type="text" class="form-control" name="emailOtp" id="emailOtp" placeholder="Enter email otp" required>
+                        <label for="verifyFormEmailOtp" class="form-label">Email OTP</label>
+                        <input type="text" class="form-control" name="verifyFormEmailOtp" id="verifyFormEmailOtp" placeholder="Enter email otp" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="emailOtp" class="form-label">SMS OTP</label>
-                        <input type="text" class="form-control" name="smsOtp" id="smsOtp" placeholder="Enter sms otp" required>
+                        <label for="verifyFormSmsOtp" class="form-label">SMS OTP</label>
+                        <input type="text" class="form-control" name="verifyFormSmsOtp" id="verifyFormSmsOtp" placeholder="Enter sms otp" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Validate</button>
                     <div class="errorMsg" style="color: red; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;"></div>

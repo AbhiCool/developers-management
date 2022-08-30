@@ -41,6 +41,13 @@
               placeholder="Enter phone number" pattern="[0-9]{10}" required>
           </div>
 
+          <div class="mb-3">
+            <input class="form-check-input" type="checkbox" value="true" name="registerFormIsAdmin" id="registerFormIsAdmin">
+            <label class="form-check-label" for="registerFormIsAdmin">
+                Is Admin?
+            </label>
+          </div>
+
           <button type="submit" class="btn btn-primary">Sign Up</button>
           <a class="ms-2" href="/login">Go to Login</a>
           <div class="errorMsg" style="color: red; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;"></div>

@@ -27,7 +27,7 @@ exports.up = function(knex) {
 
         table.string('profile_pic_url', 100);
 
-        table.text('address').notNullable();
+        table.text('address');
 
         table.integer('age');
 
@@ -44,6 +44,8 @@ exports.up = function(knex) {
         table.boolean('available_to_hire');
         
         table.boolean('available_to_freelance');
+
+        table.string('company_applied_for');
     });
 };
 

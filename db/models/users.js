@@ -1,5 +1,5 @@
 const {Model} = require('objection');
-const UserProfile = require('./userProfile');
+
 
 class Users extends Model {
     static get tableName() {
@@ -11,6 +11,7 @@ class Users extends Model {
     }
 
     static get relationMappings() {
+        const UserProfile = require('./userProfile');
         return {
             userProfile : {
                 relation: Model.HasOneRelation,

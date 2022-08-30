@@ -48,8 +48,11 @@
                         data: $("#loginForm").serialize(),
                 })
                 .done(function(data) {
-                    console.log("in done")
-                    window.location.href = "/updateProfile";
+                    console.log("in done", data);
+                    if (data.isAdmin === true)
+                        window.location.href = "/admin";
+                    else
+                        window.location.href = "/updateProfile";
                 })
                 .fail(function(err) {
                     const responseObj = JSON.parse(err.responseText);

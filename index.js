@@ -7,11 +7,16 @@ const session = require('express-session');
 require('dotenv').config();
 
 // Set portNo
-const portNo = process.env.portNo;
+const portNo = process.env.PORT || process.env.portNo;
 
 // Import needed routes
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
+const adminRouter = require('./routes/admin');
+
+
+const {checkIfDeleteMethodIsAllowed, checkIfAdmin} = require("./utils/customMiddlewares");
+
 
 // Import db setup
 const dbSetup = require('./db/db-setup');
@@ -35,10 +40,20 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+// delete method not allowed for non admin users
+app.delete(checkIfDeleteMethodIsAllowed);
+
+
 // Routes of app for authentication
 app.use("/", authRouter);
+
+// Routes related to user
 app.use("/", userRouter);
 
-app.listen(portNo, ()=> {
+// Routes related to admin
+app.use("/admin", checkIfAdmin, adminRouter);
+
+
+app.listen(portNo, () => {
     console.log(`Server started at ${portNo}`);
 });

@@ -16,30 +16,30 @@
             <div class="col-md-8 ">
                 <h4 class="text-center">Update Profile</h4>
 
-                <form action="/updateProfile" method="post" class="shadow rounded p-3">
+                <form id="updateProfileForm" class="shadow rounded p-3">
 
                     <div class="mb-3">
                       <label for="updateProfileAddress" class="form-label">Address</label>
-                      <textarea class="form-control" id="updateProfileAddress" name="updateProfileAddress" rows="3" placeholder="Enter Address" required></textarea>
+                      <textarea class="form-control" id="updateProfileAddress" name="updateProfileAddress" rows="3" placeholder="Enter Address" required><%= address %></textarea>
                     </div>
           
           
                     <div class="mb-3">
                       <label for="updateProfileAge" class="form-label">Age</label>
                       <input type="number" class="form-control" name="updateProfileAge" id="updateProfileAge"
-                        placeholder="Enter Age" required>
+                        placeholder="Enter Age" value="<%= age %>" required>
                     </div>
           
                     <div class="mb-3">
                       <label for="updateProfileEmail" class="form-label">Gender</label>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="updateProfileGender" id="updateProfileMale" value="male" checked>
+                        <input <%= gender === 'M' && 'checked' %> class="form-check-input" type="radio" name="updateProfileGender" id="updateProfileMale" value="M" required>
                         <label class="form-check-label" for="updateProfileMale">
                           Male
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="updateProfileGender" id="updateProfileFemale" value="female">
+                        <input <%= gender === 'F' && 'checked' %> class="form-check-input" type="radio" name="updateProfileGender" id="updateProfileFemale" value="F">
                         <label class="form-check-label" for="updateProfileFemale">
                           Female
                         </label>
@@ -49,31 +49,31 @@
                     <div class="mb-3">
                         <label for="updateProfileWorkExp" class="form-label">Work Experience</label>
                         <input type="text" class="form-control" name="updateProfileWorkExp" id="updateProfileWorkExp"
-                            placeholder="Enter Work experience in year(s)" required>
+                            placeholder="Enter Work experience in year(s)" value="<%= work_exp %>" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="updateProfilePresentCompany" class="form-label">Present Company</label>
-                        <input type="text" class="form-control" name="updateProfilePresentCompany" id="updateProfilePresentCompany" placeholder="--optional-- Enter Present Company">
+                        <input type="text" class="form-control" name="updateProfilePresentCompany" id="updateProfilePresentCompany" placeholder="--optional-- Enter Present Company" value="<%= present_company %>">
                     </div>
 
 
                     <div class="mb-3">
                         <label for="updateProfileCurrentCTC" class="form-label">Current CTC in LPA</label>
-                        <input type="number" class="form-control" name="updateProfileCurrentCTC" id="updateProfileCurrentCTC" placeholder="--optional-- Enter Current CTC in LPA">
+                        <input type="number" class="form-control" name="updateProfileCurrentCTC" id="updateProfileCurrentCTC" placeholder="--optional-- Enter Current CTC in LPA" value="<%= current_ctc %>">
                       </div>
 
 
                     <div class="mb-3">
                         <label for="updateProfileEmail" class="form-label">Employment Status</label>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="updateProfileEmpStatus" id="updateProfileEmployed" value="employed" >
+                          <input <%= employment_status === 'Employed' && 'checked' %> class="form-check-input" type="radio" name="updateProfileEmpStatus" id="updateProfileEmployed" value="Employed" required>
                           <label class="form-check-label" for="updateProfileEmployed">
                             Employed
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="updateProfileEmpStatus" id="updateProfileUnemployed" value="unemployed" checked>
+                          <input <%= employment_status === 'Unemployed' && 'checked' %> class="form-check-input" type="radio" name="updateProfileEmpStatus" id="updateProfileUnemployed" value="Unemployed">
                           <label class="form-check-label" for="updateProfileUnemployed">
                             Unemployed
                           </label>
@@ -81,22 +81,21 @@
                       </div>
 
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="true" name="updateProfileAvailableToHire" id="updateProfileAvailableToHire">
+                        <input <%= available_to_hire &&  'checked' %> class="form-check-input" type="checkbox" value="true" name="updateProfileAvailableToHire" id="updateProfileAvailableToHire">
                         <label class="form-check-label" for="updateProfileAvailableToHire">
                             Available to hire
                         </label>
                       </div>
 
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="true" name="updateProfileAvailableToFreelance" id="updateProfileAvailableToFreelance">
+                        <input <%= available_to_freelance &&  'checked' %> class="form-check-input" type="checkbox" value="true" name="updateProfileAvailableToFreelance" id="updateProfileAvailableToFreelance">
                         <label class="form-check-label" for="updateProfileAvailableToFreelance">
                             Available to freelance
                         </label>
                       </div>
-          
-
-          
-                    <button type="submit" class="btn btn-primary mt-2">Update Profile</button>
+                      <button type="submit" class="btn btn-primary mt-2">Update Profile</button>
+                      <div class="errorMsg" style="color: red; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;"></div>
+                      <div class="successMsg" style="color: green; font-size:11px; text-align: center; font-weight: bold; margin-top: 5px;"></div>
                   </form>
             </div>
         </div>
@@ -104,6 +103,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+      <script>
+          $(document).ready(function() {
+              $('#updateProfileForm').submit(function(e) {
+                  e.preventDefault();
+  
+                  //do your own request an handle the results
+                  $.ajax({
+                          url: '/updateProfile',
+                          type: 'patch',
+                          data: $("#updateProfileForm").serialize(),
+                  })
+                  .done(function(data) {
+                      console.log("in done");
+                      $('.errorMsg').html("");
+
+                      $('.successMsg').show().html("Profile updated successfully").fadeOut(4000, function() {
+                        $(this).html("");
+                      });
+                  })
+                  .fail(function(err) {
+                      const responseObj = JSON.parse(err.responseText);
+  
+                      console.log(responseObj);
+  
+                      $('.errorMsg').html(responseObj.err);
+
+                      $('.successMsg').html("");
+                  });
+              });
+          });
+      </script>
 </body>
 
 </html>
