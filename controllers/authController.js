@@ -155,13 +155,13 @@ const onVerifyEmailSmsOtpPost = async (req, res) => {
 
     try {
         const usersArray = await Users.query()
-            .select('user_id', 'email_id', 'phone', 'email_otp', 'phone_otp', 'email_otp_verified', 'phone_otp_verified')
+            .select('user_id', 'email_id', 'phone', 'email_otp', 'phone_otp', 'email_otp_verified', 'phone_otp_verified', 'isAdmin')
             .where('user_id', userId)
 
         if (usersArray.length === 1) {
             console.log('usersArray[0]', usersArray[0]);
 
-            const { phone_otp, email_otp } = usersArray[0];
+            const { phone_otp, email_otp , isAdmin} = usersArray[0];
             // If either email_otp_verified or phone_otp_verified are false in table for loggin in user
             if (email_otp != verifyFormEmailOtp) {
                 return res.status(403).json({
@@ -175,10 +175,12 @@ const onVerifyEmailSmsOtpPost = async (req, res) => {
             }
 
             // Here means both entered otp are correct
-            // Set the userId in session
+            // Set the userId and isAdmin in session
             req.session.userId = userId;
+            req.session.isAdmin = isAdmin;
 
-            console.log('req.session.userId in /login', req.session.userId);
+            console.log('req.session.userId', req.session.userId);
+            console.log('req.session.isAdmin', req.session.isAdmin);
 
             // Set email_otp_verified and phone_otp_verified to true in users table for current user
             const userUpdated = await Users.query()
@@ -193,7 +195,8 @@ const onVerifyEmailSmsOtpPost = async (req, res) => {
                 .json({
                     err: null,
                     status: "Verified successfully",
-                    userId: userId
+                    userId: userId,
+                    isAdmin: isAdmin
                 });
         }
         else { // Here means userid provided is invalid 

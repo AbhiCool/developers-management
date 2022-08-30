@@ -49,7 +49,13 @@
                         data: $("#verifyEmailSmsOtpForm").serialize(),
                 })
                 .done(function(data) {
-                    window.location.href = "/updateProfile";
+                    console.log(data);
+                    if (data.isAdmin) {
+                        window.location.href = "/admin";
+                    }
+                    else {
+                        window.location.href = "/updateProfile";
+                    }
                 })
                 .fail(function(err) {
                     const responseObj = JSON.parse(err.responseText);
