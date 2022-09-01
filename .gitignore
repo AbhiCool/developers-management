@@ -1,1 +1,3 @@
 node_modules
+profileUploads/*
+!profileUploads/0.png

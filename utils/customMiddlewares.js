@@ -25,6 +25,7 @@ function checkIfAdmin(req, res, next) {
     }
     next();
 }
+
 module.exports = {
     checkIfLoggedIn,
     checkIfDeleteMethodIsAllowed,

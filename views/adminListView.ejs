@@ -103,6 +103,16 @@
                     <div class="modal-body">
                         <form id="updateProfileForm" class="shadow rounded p-3">
                             <input type="hidden" name="userId" value=""/>
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-md-4">
+                                  <img style="max-height: 150px;" src="" class="updateProfileformAvatarImage d-block img-fluid mx-auto rounded" alt="avatar">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateProfileformAvatar" class="form-label">Select Profile Photo</label>
+                                <input class="form-control" type="file" id="updateProfileformAvatar" name="updateProfileformAvatar"
+                                    accept="image/*">
+                            </div>
                             <div class="mb-3">
                                 <label for="updateProfilePresentCompany" class="form-label">Present Company</label>
                                 <input type="text" class="form-control" name="updateProfilePresentCompany"
@@ -190,35 +200,46 @@
         <script>
             $(document).ready(function () {
                 $('#updateProfileForm').submit(function (e) {
+                    var form = $('#updateProfileForm')[0];
+                    var data = new FormData(form);
+
                     e.preventDefault();
 
                     //do your own request an handle the results
                     $.ajax({
                         url: '/admin',
                         type: 'put',
-                        data: $("#updateProfileForm").serialize(),
+                        enctype: 'multipart/form-data',
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        cache: false
                     })
-                        .done(function (data) {
-                            console.log("in done")
+                    .done(function (data) {
+                        console.log("in done")
 
-                            $('.errorMsg').html("");
+                        const userId = $('#updateProfileForm [name="userId"]').val();
+                        
+                        $('#updateProfileForm .updateProfileformAvatarImage').attr('src', `/avatar/${userId}?random=${Math.random()}`);
+                        
+                        $('.errorMsg').html("");
 
-                            $('.successMsg')
-                                .show()
-                                .html("Developer details updated successfully.")
-                                .fadeOut(4000, function() {
-                                    $(this).html("");
+                        $('.successMsg')
+                            .show()
+                            .html("Developer details updated successfully.")
+                            .fadeOut(4000, function() {
+                                $(this).html("");
 
-                                    updateFormPromptModal.hide();
-                                });
-                        })
-                        .fail(function (err) {
-                            const responseObj = JSON.parse(err.responseText);
+                                updateFormPromptModal.hide();
+                            });
+                    })
+                    .fail(function (err) {
+                        const responseObj = JSON.parse(err.responseText);
 
-                            console.log(responseObj);
+                        console.log(responseObj);
 
-                            $('.errorMsg').html(responseObj.err);
-                        });
+                        $('.errorMsg').html(responseObj.err);
+                    });
                 });
 
 
@@ -277,6 +298,11 @@
                     .done(function(data) {
                         console.log('data', data);
 
+                        // Reset the updateProfileForm form
+                        $("#updateProfileForm")[0].reset();
+
+                        $('#updateProfileForm .updateProfileformAvatarImage').attr('src', `/avatar/${userIdToGet}?random=${Math.random()}`);
+  
                         $('#updateProfileForm [name="userId"]').val(userIdToGet);
                         $('#updateProfileForm #updateProfilePresentCompany').val(data.present_company);
                         $('#updateProfileForm #updateProfileCurrentCTC').val(data.current_ctc);

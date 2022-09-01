@@ -3,6 +3,8 @@ const express = require("express");
 const UserProfile = require("../db/models/userProfile");
 const Users = require("../db/models/users");
 
+const upload = require("../utils/multerSetup");
+
 const router = express.Router();
 
 const {checkIfAdmin} = require("../utils/customMiddlewares");
@@ -106,7 +108,10 @@ router.delete('/', checkIfAdmin, async  (req, res) => {
     }
 });
 
-router.put('/', checkIfAdmin, async (req, res) => {
+router.put('/', checkIfAdmin, upload.single('updateProfileformAvatar'), async (req, res) => {
+    console.log('req.body', req.body);
+    console.log('req.file', req.file);
+
     try {
         const {
             userId,
